@@ -1,0 +1,189 @@
+/* ==========================================================================
+   ФІКСОВАНЕ ЛІВЕ МЕНЮ (SIDEBAR-LEFT.CSS) - PURPLE-BLACK GLASSSTYLE
+   ========================================================================== */
+/* Фіксована бокова панель впритул до лівого краю без подвійної рамки */
+.cyber-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    z-index: 1000;
+    padding: 0;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Суцільний скляний блок */
+.sidebar-inner {
+    height: 100%;
+    width: 100%;
+    background: rgba(18, 18, 24, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-right: 1px solid rgba(168, 85, 247, 0.3);
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+    border-radius: 0 20px 20px 0;
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+}
+/* Шапка/* панелі (тільки кнопка перемикання) */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 6px 12px 6px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+.sidebar-logo:hover {
+    transform: scale(1.03);
+}
+
+/* Точне неонове підсвічування та контур іконки киці */
+
+.sidebar-toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s, transform 0.3s;
+}
+
+.sidebar-toggle-btn:hover {
+    color: var(--accent-purple);
+    background: rgba(168, 85, 247, 0.12);
+}
+
+/* Заголовки розділів */
+.sidebar-heading {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 1.2px;
+    margin: 8px 0 6px 10px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Елементи списку */
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 12px;
+    transition: all 0.25s ease;
+    position: relative;
+    white-space: nowrap;
+}
+
+.sidebar-link:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-link:hover .side-icon {
+    color: var(--accent-purple);
+}
+
+/* Активний елемент (Ефект неонового підсвічування) */
+.sidebar-link.active {
+    color: #ffffff;
+    background: rgba(168, 85, 247, 0.18);
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.25);
+}
+
+.sidebar-link.active::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 25%;
+    height: 50%;
+    width: 4px;
+    background: var(--accent-purple);
+    border-radius: 4px;
+    box-shadow: 0 0 10px var(--accent-purple);
+}
+
+.side-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: var(--text-secondary);
+    transition: color 0.25s ease, filter 0.25s ease;
+}
+
+.side-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.sidebar-link.active .side-icon {
+    color: var(--accent-purple);
+    filter: drop-shadow(0 0 6px var(--accent-purple));
+}
+
+.bottom-services {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+/* ЗГОРНУТИЙ СТАН ПАНЕЛІ (ТІЛЬКИ ІКОНКИ) */
+.cyber-sidebar.collapsed {
+    width: 78px;
+}
+
+.cyber-sidebar.collapsed .sidebar-heading,
+.cyber-sidebar.collapsed .side-label,
+.cyber-sidebar.collapsed .logo-text {
+    display: none;
+}
+
+.cyber-sidebar.collapsed .sidebar-inner {
+    padding: 20px 8px;
+    align-items: center;
+}
+
+.cyber-sidebar.collapsed .sidebar-link {
+    justify-content: center;
+    padding: 12px;
+    width: 100%;
+}
+
+.cyber-sidebar.collapsed .sidebar-link.active::before {
+    left: 2px;
+}
+
+.cyber-sidebar.collapsed .sidebar-toggle-btn {
+    transform: rotate(180deg);
+}
+
+/* Відступ для головного контенту, щоб меню не перекривало сайт */
+body {
+    padding-left: 250px;
+    transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.sidebar-collapsed {
+    padding-left: 78px;
+}

@@ -1,0 +1,352 @@
+/* ==========================================================================
+   САЙДБАР ЧАТ
+   ========================================================================== */
+.sidebar {
+    flex: 1; 
+    min-width: 300px; 
+    background: #16181e; 
+    border-radius: 12px;
+    padding: 20px; 
+    border: 1px solid #242731; 
+    display: flex; 
+    flex-direction: column;
+    gap: 15px; 
+    height: 550px;
+}
+
+.sidebar-title { 
+    font-size: 18px; 
+    font-weight: bold; 
+    color: #a855f7; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+}
+
+.chat-container {
+    display: flex; 
+    flex-direction: column; 
+    flex: 1; 
+    height: 100%;
+    background: #0d0e12; 
+    border-radius: 10px; 
+    border: 1px solid #242731; 
+    overflow: hidden;
+}
+
+.chat-messages {
+    flex: 1; 
+    padding: 12px; 
+    overflow-y: auto; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px;
+}
+
+.message {
+    max-width: 85%; 
+    padding: 10px 14px; 
+    border-radius: 12px; 
+    font-size: 14px; 
+    line-height: 1.4;
+}
+
+.bot-msg {
+    background: #1f222e; 
+    color: #e5e7eb; 
+    border-bottom-left-radius: 2px; 
+    align-self: flex-start;
+    border: 1px solid #242731;
+}
+
+.user-msg {
+    background: #a855f7; 
+    color: #fff; 
+    border-bottom-right-radius: 2px; 
+    align-self: flex-end;
+}
+
+.chat-input-container {
+    display: flex; 
+    padding: 8px; 
+    background: #16181e; 
+    border-top: 1px solid #242731; 
+    gap: 6px;
+}
+
+.chat-input {
+    flex: 1; 
+    background: #0d0e12; 
+    border: 1px solid #242731; 
+    border-radius: 8px;
+    padding: 8px 12px; 
+    color: #fff; 
+    font-size: 13px; 
+    outline: none;
+}
+
+.chat-input:focus { 
+    border-color: #a855f7; 
+}
+
+.send-btn {
+    background: #a855f7; 
+    border: none; 
+    color: #fff; 
+    padding: 8px 14px; 
+    border-radius: 8px;
+    cursor: pointer; 
+    font-weight: bold; 
+    transition: 0.2s;
+}
+
+.send-btn:hover { 
+    background: #9333ea; 
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATIONS (UI)
+   ========================================================================== */
+#toast-container {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 99999;
+    pointer-events: none;
+}
+
+.toast {
+    background: rgba(20, 20, 32, 0.9);
+    color: #f3f4f6;
+    padding: 14px 20px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(12px);
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateX(130%);
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: auto;
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+.toast.success { 
+    border-color: rgba(34, 197, 94, 0.5); 
+    box-shadow: 0 10px 25px rgba(34, 197, 94, 0.15);
+}
+
+.toast.error { 
+    border-color: rgba(239, 68, 68, 0.5); 
+    box-shadow: 0 10px 25px rgba(239, 68, 68, 0.15);
+}
+
+.toast.info { 
+    border-color: rgba(168, 85, 247, 0.5); 
+    box-shadow: 0 10px 25px rgba(168, 85, 247, 0.15);
+}
+/* ==========================================================================
+   WIDGETS & NEWS CHRONOGRAPH
+   ========================================================================== */
+
+/* --- ХРОНОГРАФ НОВИН (TIMELINE & ACCORDION) --- */
+.news-terminal-section {
+    margin-top: 30px;
+}
+
+.news-chronograph-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.news-chrono-card {
+    background: var(--bg-surface, #161822);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 12px;
+    padding: 14px 18px;
+    transition: border-color 0.2s ease;
+}
+
+.news-chrono-card:hover {
+    border-color: rgba(168, 85, 247, 0.5);
+}
+
+.news-chrono-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.news-time-badge {
+    font-size: 11px;
+    color: #9ca3af;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+
+.news-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.tag-trailer { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+.tag-anons { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+.tag-studio { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+
+.news-chrono-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    flex: 1;
+}
+
+.news-expand-btn {
+    background: none;
+    border: none;
+    color: #a855f7;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.news-chrono-body {
+    display: none; /* Контент відкривається скріптом */
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: #9ca3af;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.news-video-embed {
+    margin-top: 10px;
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.news-video-embed iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+}
+
+/* --- ВСПЛИВАЮЧИЙ ЧАТ ШІ-ТЯНКИ --- */
+.ai-tyan-popover-chat {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    width: 320px;
+    height: 420px;
+    background: #161822;
+    border: 1px solid #a855f7;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(168, 85, 247, 0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 10000;
+}
+
+.ai-popover-header {
+    background: rgba(168, 85, 247, 0.15);
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+    font-weight: bold;
+}
+
+.ai-popover-close {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message {
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    max-width: 85%;
+    line-height: 1.4;
+}
+
+.bot-msg {
+    background: rgba(168, 85, 247, 0.2);
+    color: #fff;
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+}
+
+.user-msg {
+    background: #6366f1;
+    color: #fff;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+}
+
+.chat-input-container {
+    padding: 10px;
+    display: flex;
+    gap: 8px;
+    background: #0d0e12;
+}
+
+.chat-input {
+    flex: 1;
+    background: #161822;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #fff;
+    font-size: 13px;
+}
+
+.send-btn {
+    background: #a855f7;
+    border: none;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* --- МОБІЛЬНЕ НИЖНЄ МЕНЮ --- */
+@media (max-width: 768px) {
+    .mobile-bottom-nav { display: flex; }
+}
+.mobile-nav-item.active { color: #a855f7; }
+.mobile-nav-item .nav-icon { font-size: 18px; }

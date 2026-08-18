@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NekoStream — Cyber-Void Anime Platform</title>
+
+    <!-- 1. Базові змінні та глобальні стилі -->
+    <link rel="stylesheet" href="base.css">
+
+    <!-- 2. Стилі окремих блоків -->
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="catalog.css">
+    <link rel="stylesheet" href="player.css">
+    <link rel="stylesheet" href="modals.css">
+    <link rel="stylesheet" href="widgets.css">
+    <link rel="stylesheet" href="sidebar-left.css">
+</head>
+<body data-theme="purple">
+
+    <!-- ШАПКА (HEADER) -->
+    <header class="site-header">
+        <div class="header-container">
+            
+            <div class="header-left-group">
+                <!-- Кнопка гамбургер для мобільних / згортання сайдбару -->
+            
+                <!-- ЛОГОТИП (Єдиний логотип сайту у верхній шапці) -->
+                <div class="logo-box" id="logo-btn" title="На головну">
+                    <a href="#" class="header-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cat-logo-icon">
+                            <!-- Гострі кібер-вушка та контур голови киці -->
+                            <path d="M12 21 C7.5 21 4 17.5 4 13.5 C4 10 3 5 3 5 L8.2 8.2 C9.4 7.4 10.7 7 12 7 C13.3 7 14.6 7.4 15.8 8.2 L21 5 C21 5 20 10 20 13.5 C20 17.5 16.5 21 12 21 Z"/>
+                            <!-- Гострі нахилені очі -->
+                            <path d="M7.5 12.5 L10 14.5"/>
+                            <path d="M16.5 12.5 L14 14.5"/>
+                        </svg>
+                        <span class="logo-text">NEKO<span class="logo-accent">LINE</span></span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ВБУДОВАНИЙ ПОШУК -->
+            <div class="header-search">
+                <input type="text" id="search-input" placeholder="Пошук аніме за назвою...">
+            </div>
+
+            <!-- НАВІГАЦІЯ -->
+            <nav class="main-nav">
+                <a href="#" class="nav-link" id="nav-home-btn">🏠 ГОЛОВНА</a>
+
+                <div class="nav-item-dropdown">
+                    <button class="nav-link-btn">
+                        📜 АНІМЕ <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item" id="nav-catalog-btn">📋 Каталог аніме</a>
+                        <a href="#" class="dropdown-item">🔥 Онґоїнги</a>
+                        <a href="#" class="dropdown-item">🔔 Анонси</a>
+                        <a href="#" class="dropdown-item">📅 Розклад онґоїнгів</a>
+                        <a href="#" class="dropdown-item">📚 Колекції</a>
+                    </div>
+                </div>
+
+                <a href="#" class="nav-link">🏆 ТОП 100</a>
+                <a href="#" class="nav-link">🎲 ВИПАДКОВЕ</a>
+
+                <div class="nav-item-dropdown">
+                    <button class="nav-link-btn">
+                        👥 СПІЛЬНОТА <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">ℹ️ Інформація про сайт</a>
+                        <a href="#" class="dropdown-item">⭐ Рецензії</a>
+                        <a href="#" class="dropdown-item">📰 Новини</a>
+                        <a href="#" class="dropdown-item">✏️ Правки</a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- ПРОФІЛЬ / ВХІД -->
+            <div class="header-right">
+                <button id="open-auth-btn" class="auth-btn">Увійти</button>
+                
+                <div id="user-profile" class="user-badge" style="display: none; cursor: pointer;" title="Перейти в профіль">
+                    <img id="header-avatar" src="https://i.ibb.co/default-avatar.png" alt="Аватар" class="header-avatar">
+                    <span id="user-nickname" class="header-username"></span>
+                    <button id="logout-btn" class="modern-logout-btn">Вийти</button>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- ОСНОВНИЙ ЛЕЙАУТ (САЙДБАР + КОНТЕНТ) -->
+    <div class="app-layout">
+
+        <!-- 1. БОКОВА ПАНЕЛЬ (CYBER SIDEBAR) -->
+<aside class="cyber-sidebar" id="cyber-sidebar">
+    <div class="sidebar-inner glass-panel">
+        
+        <!-- Верхня шапка сайдбару з логотипом і кнопкою згортання -->
+        <div class="sidebar-header">
+            <a href="#" class="sidebar-logo">
+            
+            </a>
+            <button class="sidebar-toggle-btn" id="sidebar-toggle" title="Згорнути/Розгорнути">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-heading">МОЯ БІБЛІОТЕКА</div>
+            <a href="#" class="sidebar-link active" id="side-nav-home">
+                <span class="side-icon neon-svg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                </span>
+                <span class="side-label">Головна</span>
+            </a>
+            <a href="#" class="sidebar-link" id="side-nav-continue">
+                <span class="side-icon neon-svg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                </span>
+                <span class="side-label">Продовжити</span>
+            </a>
+            <a href="#" class="sidebar-link" id="side-nav-watchlist">
+                <span class="side-icon neon-svg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                </span>
+                <span class="side-label">Мій список</span>
+            </a>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-heading">КАТЕГОРІЇ</div>
+            <a href="#" class="sidebar-link" data-genre="Action">
+                <span class="side-icon neon-svg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 9.5L21 3"/><path d="M16 4l4 4"/><path d="M9 10.5L2 17.5l5 5 7-7"/><path d="M11 15l-2-2"/></svg>
+                </span>
+                <span class="side-label">Екшн</span>
+            </a>
+            <a href="#" class="sidebar-link" data-genre="Fantasy">
+                <span class="side-icon neon-svg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 10v10l8 2 8-2V10L12 2z"/></svg>
+                </span>
+                <span class="side-label">Фентезі</span>
+            </a>
+            <a href="#" class="sidebar-link" data-genre="Mecha">
+                <span class="side-icon neon-svg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><path d="M9 9h6v6H9z"/></svg>
+                </span>
+                <span class="side-label">Меха</span>
+            </a>
+            <a href="#" class="sidebar-link" data-genre="Romance">
+                <span class="side-icon neon-svg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </span>
+                <span class="side-label">Романтика</span>
+            </a>
+        </div>
+
+        <div class="sidebar-section bottom-services">
+            <a href="#" class="sidebar-link">
+                <span class="side-icon neon-svg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </span>
+                <span class="side-label">РОЗКЛАД</span>
+            </a>
+            <a href="#" class="sidebar-link">
+                <span class="side-icon neon-svg">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                </span>
+                <span class="side-label">НАЛАШТУВАННЯ</span>
+            </a>
+        </div>
+    </div>
+</aside>
+
+            <!-- 2. КАТАЛОГ АНІМЕ -->
+            <section id="catalog-view" style="display: none;">
+                <div class="catalog-controls">
+                    <div class="search-sort-group">
+                         <select id="sort-select" class="sort-bar">
+                            <option value="rating-desc" selected>⭐ За рейтингом (високий)</option>
+                            <option value="default">↕️ Порядок додавання</option>
+                            <option value="title-asc">🔤 За назвою (А-Я)</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-wrapper">
+    <div class="filter-top-bar">
+        <button id="filter-toggle-btn" class="genre-btn filter-toggle-btn">
+            🎛️ Фільтри
+        </button>
+        <button id="random-anime-btn" class="genre-btn random-btn">
+            🎲 Випадкове аніме
+        </button>
+    </div>
+
+    <div id="filter-dropdown" class="filter-dropdown hidden">
+   <div class="filter-group">
+        <label class="filter-label">🏷️ Жанри:</label>
+        <div id="filter-genres-list" class="filter-checkboxes-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; max-height: 180px; overflow-y: auto; padding: 8px; background: #1a1d26; border-radius: 8px; border: 1px solid #2f3446; margin-top: 6px;">
+            <label class="filter-checkbox-label" style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: #d1d5db;">
+                <input type="checkbox" value="all" id="genre-all" checked> ✨ Всі жанри
+            </label>
+            <label class="filter-checkbox-label" style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: #d1d5db;">
+                <input type="checkbox" value="favorites" class="genre-cb"> 📜 Заплановано
+            </label>
+            <label class="filter-checkbox-label" style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: #d1d5db;">
+                <input type="checkbox" value="Ісекай" class="genre-cb"> ⚔️ Ісекай
+            </label>
+            <label class="filter-checkbox-label" style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: #d1d5db;">
+                <input type="checkbox" value="Екшн" class="genre-cb"> 💥 Екшн
+            </label>
+            <label class="filter-checkbox-label" style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: #d1d5db;">
+                <input type="checkbox" value="Магія" class="genre-cb"> 🪄 Магія
+            </label>
+            <label class="filter-checkbox-label" style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: #d1d5db;">
+                <input type="checkbox" value="Драма" class="genre-cb"> 🎭 Драма
+            </label>
+            <label class="filter-checkbox-label" style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: #d1d5db;">
+                <input type="checkbox" value="Пригоди" class="genre-cb"> 🗺️ Пригоди
+            </label>
+            <label class="filter-checkbox-label" style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: #d1d5db;">
+                <input type="checkbox" value="Комедія" class="genre-cb"> 😂 Комедія
+            </label>
+            <label class="filter-checkbox-label" style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: #d1d5db;">
+                <input type="checkbox" value="Детектив" class="genre-cb"> 🔍 Детектив
+            </label>
+            <label class="filter-checkbox-label" style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: #d1d5db;">
+                <input type="checkbox" value="Жахи" class="genre-cb"> 😱 Жахи
+            </label>
+            <label class="filter-checkbox-label" style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: #d1d5db;">
+                <input type="checkbox" value="Романтика" class="genre-cb"> 💖 Романтика
+            </label>
+            <label class="filter-checkbox-label" style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: #d1d5db;">
+                <input type="checkbox" value="Фантастика" class="genre-cb"> 🚀 Фантастика
+            </label>
+            <label class="filter-checkbox-label" style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; color: #d1d5db;">
+                <input type="checkbox" value="Повсякденність" class="genre-cb"> ☕ Повсякденність
+            </label>
+        </div>
+    </div>
+
+    <div class="filter-group">
+        <label class="filter-label">📺 Тип аніме:</label>
+        <select id="filter-type" class="filter-select">
+            <option value="all">Усі типи</option>
+            <option value="tv">Серіал (TV)</option>
+            <option value="movie">Повнометражне</option>
+            <option value="ova">OVA</option>
+            <option value="ona">ONA</option>
+            <option value="special">Спешл</option>
+        </select>
+    </div>
+
+    <div class="filter-group">
+        <label class="filter-label">📅 Рік випуску:</label>
+        <div style="display: flex; gap: 8px;">
+            <input type="number" id="filter-year-from" placeholder="Від (напр. 2020)" class="filter-input" style="width: 50%;">
+            <input type="number" id="filter-year-to" placeholder="До (напр. 2026)" class="filter-input" style="width: 50%;">
+        </div>
+    </div>
+
+    <div class="filter-group">
+        <label class="filter-label">📊 Сортувати за:</label>
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <select id="filter-sort" class="filter-select" style="flex: 1;">
+                <option value="popularity">🔥 За переглядами</option>
+                <option value="ranked">⭐ За рейтингом</option>
+                <option value="name">🔤 За назвою</option>
+                <option value="aired_on">🆕 За новизною</option>
+            </select>
+            <button type="button" id="filter-order-btn" data-order="desc" title="Змінити напрямок сортування" style="padding: 6px 12px; background: #2a2d3d; color: #fff; border: 1px solid #3f445e; border-radius: 8px; cursor: pointer; white-space: nowrap;">⬇️ Спадання</button>
+        </div>
+    </div>
+
+    <div class="filter-actions" style="display: flex; gap: 8px; margin-top: 12px;">
+        <button id="apply-filters-btn" class="btn-primary" style="flex: 1;">Застосувати</button>
+        <button id="reset-filters-btn" class="btn-secondary" style="flex: 1;">Скинути</button>
+    </div>
+</div>
+                </div>
+
+                <div class="section-title" id="catalog-heading">📋 Каталог аніме</div>
+                <div class="anime-grid" id="anime-grid"></div>
+
+                <div style="text-align: center; margin: 40px 0;">
+                    <button id="load-more-btn" class="btn-primary" style="padding: 14px 32px; font-weight: bold; font-size: 16px;">
+                        Завантажити ще 🔥
+                    </button>
+                </div>
+            </section>
+
+            <!-- 3. ПЛЕЄР -->
+            <section id="player-view" style="display: none;">
+                <button class="back-btn" id="back-to-catalog">← Назад до каталогу</button>
+                
+                <div class="player-container">
+                    <div class="player-section">
+                        <div class="anime-info-header">
+                            <div>
+                                <div class="anime-title" id="active-anime-title" style="font-size: 20px; font-weight: bold;">---</div>
+                                <div class="anime-meta" style="font-size: 14px; color: #9ca3af; margin-top: 4px;">
+                                    Сезон 1 | <span id="current-ep-label" style="color: #c084fc;">Серія 1</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="video-wrapper">
+                            <iframe id="main-player" src="" allowfullscreen></iframe>
+                        </div>
+
+                        <div class="controls-card">
+                            <div class="control-group-title">Озвучка:</div>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <button style="background: #1e1b2e; color: #c084fc; border: 1px solid #a855f7; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer;">🇺🇦 Українська (Студійна)</button>
+                                <button style="background: #12131a; color: #9ca3af; border: 1px solid #1f2230; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer;">🇯🇵 Японська (Субтитри)</button>
+                            </div>
+                        </div>
+
+                        <!-- БЛОК ІНФОРМАЦІЇ "ПРО АНІМЕ" -->
+                        <div class="anime-info-card">
+                            <div class="info-header-block">
+                                <h2 class="info-title-main" id="anime-title-full">Назва аніме...</h2>
+                                <div class="info-title-alt" id="anime-title-alt">
+                                    <span id="title-romaji">Romaji Title</span> • <span id="title-english">English Title</span>
+                                </div>
+                                
+                                <div class="info-badges-row">
+                                    <span class="badge-pill badge-rating" id="info-badge-rating">⭐ 9.25</span>
+                                    <span class="badge-pill info-status-pill" id="info-badge-status">🔥 Онґоїнг</span>
+                                    <span class="badge-pill badge-type" id="info-badge-type">TV Серіал</span>
+                                    <span class="badge-pill badge-age">16+</span>
+                                </div>
+                            </div>
+
+                            <div class="info-specs-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">📅 Вихід:</span>
+                                    <span class="spec-value" id="spec-year">2024 рік</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">🎨 Студія:</span>
+                                    <span class="spec-value" id="spec-studio">Madhouse</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">📖 Джерело:</span>
+                                    <span class="spec-value" id="spec-source">Манґа</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">🎬 Серій:</span>
+                                    <span class="spec-value" id="spec-episodes">28 серій</span>
+                                </div>
+                            </div>
+
+                            <div class="info-genres-box">
+                                <span class="genres-label">🏷️ Жанри:</span>
+                                <div class="genres-list" id="info-genres-list">
+                                    <span class="genre-chip">Фентезі</span>
+                                    <span class="genre-chip">Пригоди</span>
+                                    <span class="genre-chip">Драма</span>
+                                </div>
+                            </div>
+
+                            <div class="info-description-box">
+                                <div class="desc-heading">📝 Опис сюжету</div>
+                                <p id="anime-description" class="desc-text">
+                                    Завантаження опису аніме...
+                                </p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="control-group-title">Вибір серії:</div>
+                            <div class="episodes-grid" id="episodes-container"></div>
+                        </div>
+
+                        <div class="comments-section">
+                            <h3>💬 Обговорення</h3>
+                            
+                            <div id="comment-form-box">
+                                <textarea id="comment-input" placeholder="Напишіть свій відгук про це аніме..."></textarea>
+                                <button id="send-comment-btn" class="btn-primary">Надіслати</button>
+                            </div>
+                            <div id="auth-comment-prompt" style="display: none; color: #888; margin-bottom: 15px;">
+                                💡 Увійдіть в акаунт, щоб залишити коментар.
+                            </div>
+
+                            <div id="comments-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. ПРОФІЛЬ КОРИСТУВАЧА -->
+            <section id="profile-view" style="display: none; padding: 20px 0;">
+                <div class="profile-page-container">
+                    <button class="back-btn" id="back-from-profile" style="margin-bottom: 20px;">← Назад до каталогу</button>
+
+                    <div class="profile-card page-style">
+                        <div class="profile-header">
+                            <div class="profile-banner"></div>
+                            <div class="profile-avatar-row">
+                                <div class="avatar-wrapper">
+                                    <img id="user-avatar" src="https://i.ibb.co/default-avatar.png" alt="Avatar">
+                                    <span class="status-dot" title="В мережі"></span>
+                                </div>
+                                <div class="user-titles">
+                                    <h2 id="user-name">Завантаження...</h2>
+                                    <p id="user-email">email@example.com</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="user-meta-bar">
+                            <span>📅 Реєстрація: <strong id="user-reg-date">13.01.26</strong></span>
+                            <span>🎂 Народження: <strong id="user-birth-date">???</strong></span>
+                            <span>👤 Стать: <strong id="user-gender">Чоловіча</strong></span>
+                        </div>
+
+                        <div class="activity-container">
+                            <div class="social-badges">
+                                <span class="badge-icon" title="Discord">💬</span>
+                                <span class="badge-icon" title="Site Rank">⛩️</span>
+                            </div>
+
+                            <div class="streak-box">
+                                <span class="streak-val" id="user-streak">0</span>
+                                <span class="streak-lbl">Стрік днів онлайну</span>
+                            </div>
+
+                            <div class="heatmap-box">
+                                <div class="heatmap-grid" id="heatmap-grid"></div>
+                            </div>
+                        </div>
+
+                        <div class="anime-stats-grid">
+                            <div class="stat-card watching"><span class="stat-num">0</span><span class="stat-title">👁️ Дивлюся</span></div>
+                            <div class="stat-card planned"><span class="stat-num">0</span><span class="stat-title">☁️ Заплановано</span></div>
+                            <div class="stat-card completed"><span class="stat-num">0</span><span class="stat-title">🏁 Переглянуто</span></div>
+                            <div class="stat-card dropped"><span class="stat-num">0</span><span class="stat-title">🚫 Покинуто</span></div>
+                            <div class="stat-card paused"><span class="stat-num">0</span><span class="stat-title">⏳ Відкладено</span></div>
+                            <div class="stat-card favorite"><span class="stat-num">0</span><span class="stat-title">💖 Улюблене</span></div>
+                        </div>
+
+                        <div class="profile-menu-grid">
+                            <div class="menu-btn active">📑 Списки аніме</div>
+                            <div class="menu-btn">👥 Друзі</div>
+                            <div class="menu-btn">✍️ Рецензії</div>
+                            <div class="menu-btn">💬 Коментарі</div>
+                            <div class="menu-btn">📰 Новини</div>
+                            <div class="menu-btn">📦 Колекції</div>
+                        </div>
+
+                        <div class="bio-container">
+                            <div class="bio-title">📝 Про себе:</div>
+                            <p id="user-bio" class="bio-text">Інформація відсутня...</p>
+                        </div>
+
+                        <form id="form-update-profile" class="edit-profile-section">
+                            <h3>⚙️ Налаштування профілю</h3>
+                            <div class="form-group">
+                                <label>Нова URL-картинка аватарки</label>
+                                <input type="text" id="input-avatar-url" placeholder="https://example.com/avatar.jpg">
+                            </div>
+                            <div class="form-group">
+                                <label>Оновити опис про себе</label>
+                                <textarea id="input-bio" placeholder="Напиши щось про свої улюблені аніме..."></textarea>
+                            </div>
+                            <button type="submit" class="save-btn btn-primary">Зберегти зміни ✨</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 3. НЕОНОВИЙ ПЛАВАЮЧИЙ ВІДЖЕТ ШІ-ТЯНКИ -->
+    <div class="ai-tyan-floater-widget" id="ai-tyan-floater">
+        <button class="ai-tyan-trigger" id="ai-tyan-toggle-btn">
+            <span class="ai-avatar-icon">🌸</span>
+            <span class="ai-online-pulse"></span>
+        </button>
+        <div class="ai-tyan-popover-chat" id="ai-tyan-popover" style="display: none;">
+            <div class="ai-popover-header">
+                <span class="ai-popover-title">🤖 ШІ-тянка</span>
+                <button class="ai-popover-close" id="ai-popover-close-btn">&times;</button>
+            </div>
+            <div class="chat-messages" id="floating-chat-messages">
+                <div class="message bot-msg">Привіт, семпай! 🌸 Напиши мені, що ти хочеш подивитися або який у тебе настрій!</div>
+            </div>
+            <div class="chat-input-container">
+                <input type="text" id="floating-chat-input" class="chat-input" placeholder="Напиши щось...">
+                <button class="send-btn" id="floating-send-btn">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОБІЛЬНЕ МЕНЮ -->
+    <nav class="mobile-bottom-nav">
+        <button class="mobile-nav-item active" id="mobile-nav-home">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Головна</span>
+        </button>
+        <button class="mobile-nav-item" id="mobile-nav-search">
+            <span class="nav-icon">🔍</span>
+            <span class="nav-label">Пошук</span>
+        </button>
+        <button class="mobile-nav-item" id="mobile-nav-favs">
+            <span class="nav-icon">📜</span>
+            <span class="nav-label">Заплановано</span>
+        </button>
+        <button class="mobile-nav-item" id="mobile-nav-auth">
+            <span class="nav-icon">👤</span>
+            <span class="nav-label">Профіль</span>
+        </button>
+    </nav>
+
+    <!-- МОДАЛКА АВТОРИЗАЦІЇ -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="modal-card">
+            <button class="close-btn" id="close-modal-btn">&times;</button>
+            <div class="tab-buttons">
+                <button class="tab-btn active" id="tab-login">Вхід</button>
+                <button class="tab-btn" id="tab-register">Реєстрація</button>
+            </div>
+
+            <form id="form-login">
+                <div class="form-group">
+                    <label>Нікнейм або Email</label>
+                    <input type="text" placeholder="Введіть свій нік" required>
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="submit-btn btn-primary">Увійти в акаунт</button>
+            </form>
+
+            <form id="form-register" style="display: none;">
+                <div class="form-group">
+                    <label>Вигадайте нікнейм</label>
+                    <input type="text" placeholder="Твій аніме-нік" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="example@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="submit-btn btn-primary">Створити акаунт</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНЕ ВІКНО ШВИДКОГО ПЕРЕГЛЯДУ -->
+    <div id="quick-preview-modal" class="quick-modal">
+        <div class="quick-modal-content">
+            <button id="close-quick-modal" class="close-modal-btn">&times;</button>
+            <div class="quick-modal-body">
+                <div class="quick-modal-poster">
+                    <img id="quick-modal-img" src="" alt="Anime Cover" referrerpolicy="no-referrer">
+                </div>
+                <div class="quick-modal-info">
+                    <div class="quick-modal-badges">
+                        <span id="quick-modal-rating" class="badge-rating">★ 0.0</span>
+                        <span id="quick-modal-year" class="badge-year">2024</span>
+                        <span id="quick-modal-kind" class="badge-kind">TV</span>
+                    </div>
+                    <h2 id="quick-modal-title">Назва аніме</h2>
+                    <p id="quick-modal-desc">Опис аніме завантажується...</p>
+                    <div class="quick-modal-actions">
+                        <button id="quick-play-btn" class="btn-primary">▶ Дивитися зараз</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Підключення скриптів -->
+    <script src="helpers.js"></script>
+    <script src="api.js"></script>
+    <script src="auth.js"></script>
+    <script src="player.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
