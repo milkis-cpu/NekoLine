@@ -1,0 +1,173 @@
+/* ==========================================================================
+   1. БАЗОВІ СТИЛІ ТА СКИДАННЯ (BASE.CSS)
+   ========================================================================== */
+:root {
+    /* Основна палітра */
+    --bg-main: #0d0e12;
+    --bg-surface: #161822;
+    --bg-card: #181a20;
+    --bg-glass: rgba(22, 24, 34, 0.85);
+
+    /* Акцентні кольори */
+    --accent-purple: #a855f7;
+    --accent-purple-hover: #9333ea;
+    --accent-glow: rgba(168, 85, 247, 0.4);
+
+    /* Статуси та бейджі */
+    --color-success: #22c55e;
+    --color-danger: #ef4444;
+    --color-warning: #f59e0b;
+    --color-info: #3b82f6;
+
+    /* Текст */
+    --text-primary: #ffffff;
+    --text-secondary: #9ca3af;
+    --text-muted: #6b7280;
+
+    /* Бордери та тіні */
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-glass: rgba(168, 85, 247, 0.2);
+    --shadow-main: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+    /* Шрифти */
+    --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* Скидання та дефолтні налаштування */
+*, *::before, *::after { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+main { 
+    flex: 1; 
+    padding: 25px; 
+    max-width: 1400px; 
+    margin: 0 auto; 
+    width: 100%; 
+}
+
+/* Кастомний скролбар для всього сайту */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-purple);
+}
+
+/* ==========================================================================
+   ДОДАТКОВІ ВІДЖЕТИ (NEWS TICKER & AI FLOATER)
+   ========================================================================== */
+
+/* 1. БІГУЧИЙ РЯДОК НОВИН */
+.news-ticker-container {
+    display: flex;
+    align-items: center;
+    background: var(--bg-surface);
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin-bottom: 25px;
+    border: 1px solid var(--border-glass);
+    overflow: hidden;
+}
+
+.ticker-badge {
+    background: var(--accent-purple);
+    color: var(--text-primary);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin-right: 15px;
+    white-space: nowrap;
+    box-shadow: 0 0 10px var(--accent-glow);
+    flex-shrink: 0;
+}
+
+.ticker-content {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.ticker-line {
+    display: inline-block;
+    padding-left: 100%;
+    animation: ticker 30s linear infinite;
+    font-size: 14px;
+    color: var(--text-secondary);
+    will-change: transform;
+}
+
+@keyframes ticker {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-100%, 0, 0); }
+}
+
+/* 2. ПЛАВАЮЧИЙ ВІДЖЕТ ШІ-ТЯНКИ */
+.ai-tyan-floater-widget {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 9999;
+}
+
+.ai-tyan-trigger {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: var(--accent-purple);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 0 20px var(--accent-glow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    position: relative;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease;
+}
+
+.ai-tyan-trigger:hover {
+    transform: scale(1.1);
+    background: var(--accent-purple-hover);
+}
+
+.ai-online-pulse {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    background: var(--color-success);
+    border-radius: 50%;
+    border: 2px solid var(--bg-main);
+}
