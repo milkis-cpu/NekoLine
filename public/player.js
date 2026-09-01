@@ -26,7 +26,8 @@ async function openAnimePlayer(anime) {
     safeSetText('spec-episodes', `${totalEps} серій`);
 
     try {
-        const detailUrl = `https://corsproxy.io/?${encodeURIComponent(`https://shikimori.one/api/animes/${anime.id}`)}`;
+        const targetId = anime.shikimori_id || anime.id;
+        const detailUrl = `https://corsproxy.io/?${encodeURIComponent(`https://shikimori.io/api/animes/${targetId}`)}`;
         const res = await fetch(detailUrl);
         if (res.ok) {
             const fullData = await res.json();

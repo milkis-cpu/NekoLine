@@ -1,11 +1,6 @@
 // ==========================================
 // HELPERS.JS — Константи, стан та допоміжні функції
 // ==========================================
-
-const SHIKIMORI_BASE = "https://shikimori.one";
-const API_URL = 'http://localhost:5000/api';
-const DEFAULT_PLACEHOLDER = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='420' viewBox='0 0 300 420'><rect width='100%' height='100%' fill='%231f222e'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23a855f7' font-family='sans-serif' font-size='18' font-weight='bold'>🎬 Без постера</text></svg>";
-
 // Глобальний стан
 let currentAnimeList = [];
 let favorites = JSON.parse(localStorage.getItem('nekostream_favs')) || [];
@@ -116,15 +111,26 @@ function toggleFavorite(animeId) {
     if (typeof renderCatalog === 'function') renderCatalog();
 }
 
-function buildProxiedPosterUrl(rawPath) {
-    if (!rawPath || rawPath.includes('missing')) {
-        return DEFAULT_PLACEHOLDER;
+function handleImageError(img, originalUrl) {
+    if (!originalUrl || originalUrl === DEFAULT_PLACEHOLDER) {
+        img.onerror = null;
+        img.src = DEFAULT_PLACEHOLDER;
+        return;
     }
-    if (rawPath.startsWith('http://') || rawPath.startsWith('https://') || rawPath.startsWith('data:')) {
-        return rawPath;
+
+    let retries = parseInt(img.dataset.retries || '0', 10);
+    const maxRetries = 5;
+
+    if (retries < maxRetries) {
+        img.dataset.retries = retries + 1;
+        const delay = (retries + 1) * 1500;
+
+        setTimeout(() => {
+            const separator = originalUrl.includes('?') ? '&' : '?';
+            img.src = `${originalUrl}${separator}_retry=${Date.now()}`;
+        }, delay);
+    } else {
+        img.onerror = null;
+        img.src = DEFAULT_PLACEHOLDER;
     }
-    if (rawPath.startsWith('/')) {
-        return `https://shikimori.one${rawPath}`;
-    }
-    return `https://shikimori.one/${rawPath}`;
 }

@@ -1,28 +1,91 @@
 // ==========================================
 // APP.JS — Рендеринг каталогу, перемикання видів та обробка подій
 // ==========================================
-
 function createAnimeCardHTML(anime) {
     const imgUrl = anime.poster || DEFAULT_PLACEHOLDER;
     const rating = anime.rating || '0.0';
     const status = anime.status || '';
-    const isFav = favorites.includes(anime.id) ? 'active' : '';
-    const epCount = anime.episodes || anime.episodes_aired || '';
-    const genresList = anime.genres ? anime.genres.map(g => `<span>${g}</span>`).join('') : '';
+    const isFav = (typeof favorites !== 'undefined' && favorites.includes(anime.id)) ? 'active' : '';
 
-    const mirrorUrl = imgUrl.includes('shikimori.one') 
-        ? imgUrl.replace('shikimori.one', 'shikimori.me') 
-        : imgUrl;
+    const genresArr = Array.isArray(anime.genres) 
+        ? (anime.genres.length === 1 && typeof anime.genres[0] === 'string' && anime.genres[0].includes(',')
+            ? anime.genres[0].split(',').map(g => g.trim()).filter(Boolean)
+            : anime.genres)
+        : (typeof anime.genres === 'string' ? anime.genres.split(',').map(g => g.trim()).filter(Boolean) : []);
+
+    const maxVisibleGenres = 4;
+    const visibleGenres = genresArr.slice(0, maxVisibleGenres);
+    const extraGenresCount = genresArr.length - maxVisibleGenres;
+
+    const genreColorMap = {
+        'сёнен': 0, 'сьонен': 0,
+        'экшен': 1, 'екшн': 1,
+        'приключения': 2, 'пригоди': 2,
+        'фэнтези': 3, 'фентезі': 3,
+        'сверхъестественное': 4, 'надприродне': 4,
+        'драма': 5,                           // Фіолетовий
+        'триллер': 6, 'трилер': 6,
+        'исэкай': 7, 'ісекай': 7,
+        'романтика': 8,                        // Яскраво-рожевий
+        'комедия': 9, 'комедія': 9,
+        'детектив': 10,
+        'спорт': 11,
+        'повседневность': 12, 'буденність': 12, // Світло-м'ятний зелений
+        'мистика': 13, 'містика': 13,
+        'фантастика': 14,
+        'ужасы': 15, 'жахи': 15,
+        'школа': 16,                           // Насичений смарагдово-зелений
+        'музыка': 17, 'музика': 17,
+        'сэйнэн': 18, 'сейнен': 18,
+        'меха': 19,
+        'военное': 20, 'військове': 20,         // Оливково-салатовий
+        'взрослые персонажи': 21, 'дорослі персонажі': 21
+    };
+
+    const getGenreColorIdx = (genreName) => {
+        const cleanName = String(genreName).trim().toLowerCase();
+        let colorIdx = genreColorMap[cleanName];
+        if (colorIdx === undefined) {
+            let hash = 0;
+            for (let i = 0; i < cleanName.length; i++) {
+                hash = (hash * 31 + cleanName.charCodeAt(i)) % 22;
+            }
+            colorIdx = Math.abs(hash);
+        }
+        return colorIdx;
+    };
+
+    // Формуємо 2 жанри для самої картки
+    const cardGenresHTML = genresArr.slice(0, 2).map(g => {
+        const name = typeof g === 'object' ? (g.russian || g.name) : g;
+        const colorIdx = getGenreColorIdx(name);
+        return `<span class="neon-genre-tag card-genre-badge color-${colorIdx}">${name}</span>`;
+    }).join('');
+
+    // Список жанрів для спливаючого тултіпа
+    let genresList = visibleGenres.map(g => {
+        const name = typeof g === 'object' ? (g.russian || g.name) : g;
+        const colorIdx = getGenreColorIdx(name);
+        return `<span class="neon-genre-tag color-${colorIdx}">${name}</span>`;
+    }).join('');
+
+    if (extraGenresCount > 0) {
+        genresList += `<span class="neon-genre-tag more-tag">+ ${extraGenresCount}</span>`;
+    }
+
+    if (!genresList) {
+        genresList = '<span class="neon-genre-tag">Аніме</span>';
+    }
 
     return `
-    <div class="anime-card" data-id="${anime.id}" data-title="${anime.title}" style="cursor: pointer;">
+    <div class="anime-card" data-id="${anime.id}" data-title="${anime.title || ''}" style="cursor: pointer;">
         <div class="poster-container">
             <img class="poster-img" 
                  src="${imgUrl}" 
                  alt="${anime.title || ''}" 
                  loading="lazy"
                  referrerpolicy="no-referrer"
-                 onerror="if(!this.dataset.triedMirror){this.dataset.triedMirror='true'; this.src='${mirrorUrl}';} else {this.onerror=null; this.src='${DEFAULT_PLACEHOLDER}';}">
+                 onerror="handleImageError(this, '${imgUrl}')">
             
             <div class="card-badges-top">
                 <span class="badge-rating">⭐ ${rating}</span>
@@ -33,26 +96,42 @@ function createAnimeCardHTML(anime) {
         </div>
 
         <div class="card-info">
-            <h3 class="card-title" title="${anime.title}">${anime.title}</h3>
+            <h3 class="card-title" title="${anime.title || ''}">${anime.title || 'Без назви'}</h3>
             <div class="card-meta">
-                <span>${anime.year || ''} • ${anime.tags || anime.kind || 'TV'}</span>
-                ${epCount ? `<span class="badge-episodes">🎬 ${epCount} сер.</span>` : ''}
+                <span class="card-year">${anime.year || '2024'}</span>
+                ${cardGenresHTML}
             </div>
         </div>
 
         <div class="anime-tooltip">
-            <div class="tooltip-content">
-                <h4 class="tooltip-title">${anime.title}</h4>
-                <div class="tooltip-meta">${anime.year || '2024'} | ${anime.tags || 'TV'} | <b>${status}</b></div>
-                <div class="tooltip-genres">${genresList}</div>
-                <p class="tooltip-studio">Студія: <b>${anime.studio || 'Невідомо'}</b></p>
+            <div class="tooltip-top-row">
+                <div class="tooltip-content">
+                    <div class="tooltip-header">
+                        <h4 class="tooltip-title">${anime.title || ''}</h4>
+                        <div class="tooltip-badges">
+                            <span class="tooltip-pill rating">⭐ ${rating}</span>
+                            <span class="tooltip-pill year">${anime.year || '2024'}</span>
+                            ${status ? `<span class="tooltip-pill status">${status}</span>` : ''}
+                        </div>
+                    </div>
+
+                    <div class="tooltip-block">
+                        <span class="tooltip-block-label">ЖАНРИ</span>
+                        <div class="tooltip-genres">${genresList}</div>
+                    </div>
+                </div>
+
+                <img class="tooltip-poster" 
+                     src="${imgUrl}" 
+                     alt="${anime.title || ''}" 
+                     referrerpolicy="no-referrer"
+                     onerror="handleImageError(this, '${imgUrl}')">
+            </div>
+
+            <div class="tooltip-block desc-block">
+                <span class="tooltip-block-label">ОПИС</span>
                 <p class="tooltip-desc">${anime.description || 'Опис відсутній'}</p>
             </div>
-            <img class="tooltip-poster" 
-                 src="${imgUrl}" 
-                 alt="${anime.title}" 
-                 referrerpolicy="no-referrer"
-                 onerror="this.onerror=null; this.src='${DEFAULT_PLACEHOLDER}';">
         </div>
     </div>
     `;
@@ -70,7 +149,9 @@ function renderCatalog(append = false, newItemsOnly = null) {
         });
         return;
     }
-
+if (typeof initHeroSlider === 'function' && Array.isArray(currentAnimeList) && currentAnimeList.length > 0) {
+        initHeroSlider(currentAnimeList);
+    }
     // 2. Перше завантаження / новий фільтр — очищаємо сітку і рендеримо першу сторінку
     grid.innerHTML = '';
 
@@ -94,11 +175,13 @@ function renderCatalog(append = false, newItemsOnly = null) {
 }
 
 function showCatalogView() {
+    const homeView = document.getElementById('home-view');
     const catalogView = document.getElementById('catalog-view');
     const playerView = document.getElementById('player-view');
     const profileView = document.getElementById('profile-view');
     const mainPlayer = document.getElementById('main-player');
 
+    if (homeView) homeView.style.display = 'none';
     if (playerView) playerView.style.display = 'none';
     if (profileView) profileView.style.display = 'none';
     if (catalogView) catalogView.style.display = 'block';
@@ -261,14 +344,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Сортування
+    // Сортування (Селектор)
     const sortSelect = document.getElementById('sort-select');
     if (sortSelect) {
         sortSelect.addEventListener('change', () => {
             currentPage = 1;
-            const activeSearch = searchInput ? searchInput.value.trim() : '';
-            const activeQuery = (selectedGenre !== 'all' && selectedGenre !== 'favorites') ? selectedGenre : activeSearch;
-            fetchAnimeFromAPI(activeQuery, false);
+            const orderDir = filterOrderBtn ? (filterOrderBtn.getAttribute('data-order') || 'desc') : 'desc';
+            fetchAnimeFromAPI('', false, {
+                ...currentFilters,
+                sort: sortSelect.value,
+                orderDir: orderDir
+            });
         });
     }
 
@@ -280,19 +366,22 @@ const filterDropdown = document.getElementById('filter-dropdown');
 const applyFiltersBtn = document.getElementById('apply-filters-btn');
 const resetFiltersBtn = document.getElementById('reset-filters-btn');
 const randomAnimeBtn = document.getElementById('random-anime-btn');
-const filterOrderBtn = document.getElementById('filter-order-btn');
-
 // Перемикач напрямку сортування (Зростання / Спадання)
+const filterOrderBtn = document.getElementById('filter-order-btn');
 if (filterOrderBtn) {
     filterOrderBtn.addEventListener('click', () => {
-        const currentOrder = filterOrderBtn.getAttribute('data-order');
-        if (currentOrder === 'desc') {
-            filterOrderBtn.setAttribute('data-order', 'asc');
-            filterOrderBtn.innerText = '⬆️ Зростання';
-        } else {
-            filterOrderBtn.setAttribute('data-order', 'desc');
-            filterOrderBtn.innerText = '⬇️ Спадання';
-        }
+        const currentOrder = filterOrderBtn.getAttribute('data-order') || 'desc';
+        const newOrder = currentOrder === 'desc' ? 'asc' : 'desc';
+        filterOrderBtn.setAttribute('data-order', newOrder);
+        filterOrderBtn.innerText = newOrder === 'asc' ? '⬆️ Зростання' : '⬇️ Спадання';
+
+        currentPage = 1;
+        const activeSort = document.getElementById('filter-sort')?.value || 'popularity';
+        fetchAnimeFromAPI('', false, {
+            ...currentFilters,
+            sort: activeSort,
+            orderDir: newOrder
+        });
     });
 }
 
@@ -667,6 +756,7 @@ document.addEventListener('keydown', (e) => {
 });
 document.addEventListener('DOMContentLoaded', () => {
     const navHomeBtn = document.getElementById('nav-home-btn');
+    const sideNavHome = document.getElementById('side-nav-home');
     const navCatalogBtn = document.getElementById('nav-catalog-btn');
     const logoBtn = document.getElementById('logo-btn');
 
@@ -675,33 +765,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerView = document.getElementById('player-view');
     const profileView = document.getElementById('profile-view');
 
-    function hideAllViews() {
-        if (homeView) homeView.style.display = 'none';
+    // Функція переходу на Головну сторінку
+    function openHome(e) {
+        if (e) e.preventDefault();
+        if (homeView) homeView.style.display = 'block';
         if (catalogView) catalogView.style.display = 'none';
         if (playerView) playerView.style.display = 'none';
         if (profileView) profileView.style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Перехід у каталог
-    if (navCatalogBtn) {
-        navCatalogBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            hideAllViews();
-            if (catalogView) catalogView.style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    }
-
-    // Перехід на головну
-    function openHome(e) {
+    // Функція переходу в Каталог
+    function openCatalog(e) {
         if (e) e.preventDefault();
-        hideAllViews();
-        if (homeView) homeView.style.display = 'block';
+        if (homeView) homeView.style.display = 'none';
+        if (catalogView) catalogView.style.display = 'block';
+        if (playerView) playerView.style.display = 'none';
+        if (profileView) profileView.style.display = 'none';
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     if (navHomeBtn) navHomeBtn.addEventListener('click', openHome);
+    if (sideNavHome) sideNavHome.addEventListener('click', openHome);
     if (logoBtn) logoBtn.addEventListener('click', openHome);
+    if (navCatalogBtn) navCatalogBtn.addEventListener('click', openCatalog);
 });
 document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('cyber-sidebar');

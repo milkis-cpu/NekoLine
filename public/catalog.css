@@ -514,12 +514,23 @@ body > main > *:not(.cyber-sidebar):not(.sidebar-nav) {
     text-overflow: ellipsis;
 }
 
+/* Мета-дані на картці каталогу */
 .card-meta {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    font-size: 12px;
-    color: var(--text-secondary);
+    gap: 4px;
+    font-size: 11px;
+    color: #9ca3af;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.card-genres {
+    color: #a78bfa;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .badge-episodes {
@@ -533,21 +544,22 @@ body > main > *:not(.cyber-sidebar):not(.sidebar-nav) {
     position: absolute;
     top: 0;
     left: 105%;
-    width: 320px;
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: 12px;
-    padding: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+    width: 350px;
+    background: #12141c;
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(168, 85, 247, 0.2);
     z-index: 1000;
     color: var(--text-primary);
     pointer-events: none;
-    animation: tooltipFade 0.2s ease-in-out;
+    flex-direction: column;
+    gap: 12px;
+    animation: tooltipFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .anime-card:hover .anime-tooltip {
     display: flex;
-    gap: 12px;
 }
 
 .anime-card.open-left .anime-tooltip {
@@ -556,59 +568,194 @@ body > main > *:not(.cyber-sidebar):not(.sidebar-nav) {
 }
 
 @keyframes tooltipFade {
-    from { opacity: 0; transform: translateX(-5px); }
+    from { opacity: 0; transform: translateX(-6px); }
     to { opacity: 1; transform: translateX(0); }
+}
+
+.tooltip-top-row {
+    display: flex;
+    gap: 12px;
+    width: 100%;
 }
 
 .tooltip-content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
+    min-width: 0;
+}
+
+.tooltip-header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .tooltip-title {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: #ffffff;
     line-height: 1.3;
 }
 
-.tooltip-meta {
-    font-size: 12px;
-    color: var(--text-secondary);
+.tooltip-badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
 }
 
+.tooltip-pill {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #d1d5db;
+}
+
+.tooltip-pill.rating {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.4);
+    color: #fbbf24;
+}
+
+.tooltip-pill.status {
+    background: rgba(168, 85, 247, 0.15);
+    border-color: rgba(168, 85, 247, 0.4);
+    color: #c084fc;
+}
+
+/* Блочна структура Тултіпу */
+.tooltip-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Фіолетова неонова рамка для назв блоків */
+.tooltip-block-label {
+    display: inline-block;
+    width: fit-content;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    color: #f8f7f9;
+    background: rgba(168, 85, 247, 0.12);
+    border: 1px solid rgba(168, 85, 247, 0.6);
+    border-radius: 6px;
+    padding: 2px 8px;
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.3), inset 0 0 4px rgba(168, 85, 247, 0.2);
+    text-shadow: 0 0 5px rgba(168, 85, 247, 0.6);
+}
+
+/* Різнокольорові неонові рамки жанрів */
 .tooltip-genres {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
+    gap: 6px;
 }
 
-.tooltip-genres span {
-    background: var(--border-subtle);
-    color: #d1d5db;
-    font-size: 10px;
+.neon-genre-tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+/* Унікальні неонові палітри для кожного жанру */
+.neon-genre-tag.color-0  { background: rgba(139, 92, 246, 0.18); border: 1px solid #8b5cf6; color: #ddd6fe; box-shadow: 0 0 8px rgba(139, 92, 246, 0.4); } /* Сьонен: Бузковий */
+.neon-genre-tag.color-1  { background: rgba(239, 68, 68, 0.18); border: 1px solid #ef4444; color: #fecaca; box-shadow: 0 0 8px rgba(239, 68, 68, 0.4); } /* Екшн: Яскраво-червоний */
+.neon-genre-tag.color-2  { background: rgba(2, 132, 199, 0.18); border: 1px solid #0284c7; color: #bae6fd; box-shadow: 0 0 8px rgba(2, 132, 199, 0.4); } /* Пригоди: Блакитний */
+.neon-genre-tag.color-3  { background: rgba(20, 184, 166, 0.18); border: 1px solid #14b8a6; color: #ccfbf1; box-shadow: 0 0 8px rgba(20, 184, 166, 0.4); } /* Фентезі: Бірюзовий */
+.neon-genre-tag.color-4  { background: rgba(79, 70, 229, 0.18); border: 1px solid #4f46e5; color: #c7d2fe; box-shadow: 0 0 8px rgba(79, 70, 229, 0.4); } /* Надприродне: Індиго */
+.neon-genre-tag.color-5  { background: rgba(168, 85, 247, 0.22); border: 1px solid #a855f7; color: #e9d5ff; box-shadow: 0 0 10px rgba(168, 85, 247, 0.5); } /* Драма: Насичений фіолетовий */
+.neon-genre-tag.color-6  { background: rgba(185, 28, 28, 0.22); border: 1px solid #b91c1c; color: #fca5a5; box-shadow: 0 0 8px rgba(185, 28, 28, 0.4); } /* Трилер: Бордовий */
+.neon-genre-tag.color-7  { background: rgba(217, 70, 239, 0.18); border: 1px solid #d946ef; color: #f5d0fe; box-shadow: 0 0 8px rgba(217, 70, 239, 0.4); } /* Ісекай: Фуксія */
+.neon-genre-tag.color-8  { background: rgba(255, 105, 180, 0.22); border: 1px solid #ff69b4; color: #fbcfe8; box-shadow: 0 0 10px rgba(255, 105, 180, 0.5); } /* Романтика: Яскраво-рожевий */
+.neon-genre-tag.color-9  { background: rgba(234, 179, 8, 0.18); border: 1px solid #eab308; color: #fef9c3; box-shadow: 0 0 8px rgba(234, 179, 8, 0.4); } /* Комедія: Жовтий */
+.neon-genre-tag.color-10 { background: rgba(37, 99, 235, 0.18); border: 1px solid #2563eb; color: #bfdbfe; box-shadow: 0 0 8px rgba(37, 99, 235, 0.4); } /* Детектив: Синій */
+.neon-genre-tag.color-11 { background: rgba(249, 115, 22, 0.18); border: 1px solid #f97316; color: #ffedd5; box-shadow: 0 0 8px rgba(249, 115, 22, 0.4); } /* Спорт: Помаранчевий */
+.neon-genre-tag.color-12 { background: rgba(52, 211, 153, 0.18); border: 1px solid #34d399; color: #a7f3d0; box-shadow: 0 0 8px rgba(52, 211, 153, 0.4); } /* Буденність: Світло-м'ятний зелений */
+.neon-genre-tag.color-13 { background: rgba(124, 58, 237, 0.22); border: 1px solid #7c3aed; color: #ddd6fe; box-shadow: 0 0 8px rgba(124, 58, 237, 0.4); } /* Містика: Темно-аметистовий */
+.neon-genre-tag.color-14 { background: rgba(6, 182, 212, 0.18); border: 1px solid #06b6d4; color: #cffafe; box-shadow: 0 0 8px rgba(6, 182, 212, 0.4); } /* Фантастика: Електрик-ціановий */
+.neon-genre-tag.color-15 { background: rgba(255, 77, 77, 0.2); border: 1px solid #ff4d4d; color: #ffe3e3; box-shadow: 0 0 8px rgba(255, 77, 77, 0.4); } /* Жахи: Неоново-кораловий */
+.neon-genre-tag.color-16 { background: rgba(5, 150, 105, 0.22); border: 1px solid #059669; color: #6ee7b7; box-shadow: 0 0 8px rgba(5, 150, 105, 0.4); } /* Школа: Трав'янисто-смарагдовий */
+.neon-genre-tag.color-17 { background: rgba(245, 158, 11, 0.18); border: 1px solid #f59e0b; color: #fde68a; box-shadow: 0 0 8px rgba(245, 158, 11, 0.4); } /* Музика: Золотистий */
+.neon-genre-tag.color-18 { background: rgba(15, 118, 110, 0.22); border: 1px solid #0f766e; color: #ccfbf1; box-shadow: 0 0 8px rgba(15, 118, 110, 0.4); } /* Сейнен: Темно-морський */
+.neon-genre-tag.color-19 { background: rgba(100, 116, 139, 0.2); border: 1px solid #64748b; color: #e2e8f0; box-shadow: 0 0 8px rgba(100, 116, 139, 0.4); } /* Меха: Сталевий сіро-синій */
+.neon-genre-tag.color-20 { background: rgba(132, 204, 22, 0.22); border: 1px solid #84cc16; color: #ecfccb; box-shadow: 0 0 8px rgba(132, 204, 22, 0.4); } /* Військове: Оливково-салатовий */
+.neon-genre-tag.color-21 { background: rgba(225, 29, 72, 0.2); border: 1px solid #e11d48; color: #ffe4e6; box-shadow: 0 0 8px rgba(225, 29, 72, 0.4); } /* Дорослі персонажі: Темно-малиновий */
+
+/* Стилі для бейджа головного жанру під карткою */
+.card-genres.color-0  { color: #8b5cf6; }
+.card-genres.color-1  { color: #ef4444; }
+.card-genres.color-2  { color: #0284c7; }
+.card-genres.color-3  { color: #14b8a6; }
+.card-genres.color-4  { color: #4f46e5; }
+.card-genres.color-5  { color: #a855f7; }
+.card-genres.color-6  { color: #b91c1c; }
+.card-genres.color-7  { color: #d946ef; }
+.card-genres.color-8  { color: #ff69b4; }
+.card-genres.color-9  { color: #eab308; }
+.card-genres.color-10 { color: #2563eb; }
+.card-genres.color-11 { color: #f97316; }
+.card-genres.color-12 { color: #34d399; }
+.card-genres.color-13 { color: #7c3aed; }
+.card-genres.color-14 { color: #06b6d4; }
+.card-genres.color-15 { color: #ff4d4d; }
+.card-genres.color-16 { color: #059669; }
+.card-genres.color-17 { color: #f59e0b; }
+.card-genres.color-18 { color: #0f766e; }
+.card-genres.color-19 { color: #64748b; }
+.card-genres.color-20 { color: #84cc16; }
+.card-genres.color-21 { color: #e11d48; }.neon-genre-tag.more-tag {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: #e5e7eb !important;
+    box-shadow: none !important;
+}
+.card-meta .neon-genre-tag {
+    font-size: 11px;
     padding: 2px 6px;
-    border-radius: 4px;
+    max-width: 75px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-shrink: 1;
+}
+.desc-block {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 8px 10px;
 }
 
-.tooltip-studio, 
 .tooltip-desc {
     font-size: 11px;
-    color: var(--text-secondary);
+    line-height: 1.4;
+    color: #9ca3af;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    margin: 0;
 }
 
 .tooltip-poster {
-    width: 90px;
-    height: 130px;
+    width: 95px;
+    height: 135px;
     object-fit: cover;
     border-radius: 8px;
-    border: 1px solid var(--border-subtle);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    flex-shrink: 0;
 }
 
 /* ==========================================================================
@@ -798,4 +945,38 @@ body > main > *:not(.cyber-sidebar):not(.sidebar-nav) {
     main {
         padding-bottom: 70px;
     }
+}
+/* Неонова обводка та світіння для РОКУ (на картці та в тултіпі) */
+.card-year,
+.tooltip-pill.year {
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid #ecf1f4;
+    color: #e4eaee;
+    box-shadow: 0 0 4px rgba(254, 254, 254, 0.76);
+    border-radius: 6px;
+    padding: 1px 5px;
+    font-size: 10px;
+    flex-shrink: 0;
+}
+
+/* Неонова обводка та світіння для РЕЙТИНГУ */
+.badge-rating,
+.tooltip-pill.rating {
+    background: rgba(245, 158, 11, 0.18);
+    border: 1px solid #f59e0b;
+    color: #fde68a;
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+    border-radius: 6px;
+    padding: 2px 8px;
+}
+
+/* Неонова обводка та світіння для СТАТУСУ (Онґоїнг / Завершено) */
+.badge-status,
+.tooltip-pill.status {
+    background: rgba(168, 85, 247, 0.18);
+    border: 1px solid #a855f7;
+    color: #e9d5ff;
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
+    border-radius: 6px;
+    padding: 2px 8px;
 }

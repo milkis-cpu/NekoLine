@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="modals.css">
     <link rel="stylesheet" href="widgets.css">
     <link rel="stylesheet" href="sidebar-left.css">
+    <link rel="stylesheet" href="hero.css">
 </head>
 <body data-theme="purple">
 
@@ -177,7 +178,23 @@
         </div>
     </div>
 </aside>
-
+<!-- 1. ГОЛОВНА СТОРІНКА (HOME VIEW) -->
+            <section id="home-view">
+                <!-- HERO SECTION (Мульти-карусель 3 аніме) -->
+                <section class="hero-section" id="hero-section">
+                    <div class="hero-header">
+                        <h2 class="hero-section-title">🔥 Тренди сезону</h2>
+                        <div class="hero-controls">
+                            <button class="hero-arrow prev" id="hero-prev-btn">&#10094;</button>
+                            <div class="hero-dots" id="hero-dots"></div>
+                            <button class="hero-arrow next" id="hero-next-btn">&#10095;</button>
+                        </div>
+                    </div>
+                    <div class="hero-grid" id="hero-cards-container">
+                        <!-- 3 картки аніме генеруються через hero.js -->
+                    </div>
+                </section>
+            </section>
             <!-- 2. КАТАЛОГ АНІМЕ -->
             <section id="catalog-view" style="display: none;">
                 <div class="catalog-controls">
@@ -589,5 +606,6 @@
     <script src="auth.js"></script>
     <script src="player.js"></script>
     <script src="app.js"></script>
+    <script src="hero.js"></script>
 </body>
 </html>
