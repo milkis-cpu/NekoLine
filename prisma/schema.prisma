@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// УСІ ТВОЇ МОДЕЛІ (User, Anime, Comment, WatchHistory, Bookmark) ЛИШАЮТЬСЯ БЕЗ ЗМІН!
+
+// 1. Користувачі (з аватаркою та біографією)
+model User {
+  id           Int            @id @default(autoincrement())
+  username     String         @unique
+  email        String         @unique
+  password     String
+  avatar       String?        // Посилання на аватарку
+  bio          String?        // Короткий статус / опис
+  role         String         @default("user") // "user" або "admin"
+  createdAt    DateTime       @default(now())
+  
+  comments     Comment[]
+  watchHistory WatchHistory[]
+  bookmarks    Bookmark[]
+}
+
+// 2. База аніме (для збереження ідеальних постерів)
+model Anime {
+  id          String   @id @default(uuid())
+  title       String
+  poster      String
+  description String?
+  rating      Float    @default(0.0)
+  year        Int?
+  status      String   @default("Завершено")
+  genres      String?
+
+  comments     Comment[]
+  watchHistory WatchHistory[]
+  bookmarks    Bookmark[]
+}
+
+// 3. Коментарі під аніме
+model Comment {
+  id        Int      @id @default(autoincrement())
+  text      String
+  createdAt DateTime @default(now())
+  
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  
+  animeId   String
+  anime     Anime    @relation(fields: [animeId], references: [id])
+}
+
+// 4. Історія переглядів (на якій серії зупинився)
+model WatchHistory {
+  id          Int      @id @default(autoincrement())
+  lastEpisode Int      @default(1)
+  updatedAt   DateTime @updatedAt
+
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+
+  animeId     String
+  anime       Anime    @relation(fields: [animeId], references: [id])
+}
+
+// 5. Заплановане / Дивлюсь / Переглянуто
+model Bookmark {
+  id      Int    @id @default(autoincrement())
+  status  String // "watching", "planned", "completed"
+
+  userId  Int
+  user    User   @relation(fields: [userId], references: [id])
+
+  animeId String
+  anime   Anime  @relation(fields: [animeId], references: [id])
+}
